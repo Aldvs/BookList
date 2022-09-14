@@ -6,3 +6,17 @@
 //
 
 import Foundation
+
+struct BookModel: Decodable {
+    let title: String
+    let isbn: String
+    let author: String
+}
+
+enum Link: String {
+    case bookListApi = "https://demo.api-platform.com/books?page=1&itemsPerPage=30"
+}
+
+//curl -X 'GET' \
+//  'https://demo.api-platform.com/books?page=1&itemsPerPage=30'
+//  -H 'accept: application/vnd.api+json'

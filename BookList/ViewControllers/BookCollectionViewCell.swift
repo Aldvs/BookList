@@ -9,4 +9,6 @@ import UIKit
 
 class BookCollectionViewCell: UICollectionViewCell {
     
+    static let reuseId = "BookCell"
+    
 }

@@ -7,34 +7,41 @@
 
 import UIKit
 
-private let reuseIdentifier = "BookInfoCell"
-
 class BookListCollectionViewController: UICollectionViewController {
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .white
+        setupNavigationBar()
+        
+        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: BookCollectionViewCell.reuseId)
+        
     }
+    //MARK: - NavigationBar
+        private func setupNavigationBar() {
+            title = "Список книг"
+            navigationController?.navigationBar.prefersLargeTitles = false
 
-    /*
-    // MARK: - Navigation
+            let navBarAppearence = UINavigationBarAppearance()
+            navBarAppearence.configureWithOpaqueBackground()
+            navBarAppearence.titleTextAttributes = [.foregroundColor: UIColor.black]
+            navBarAppearence.largeTitleTextAttributes = [.foregroundColor: UIColor.black]
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
+            navBarAppearence.backgroundColor = UIColor(
+                red: 255/255,
+                green: 255/255,
+                blue: 255/255,
+                alpha: 227/255)
+
+            navigationController?.navigationBar.standardAppearance = navBarAppearence
+            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearence
+
+            navigationController?.navigationBar.tintColor = .white
+
+        }
 
     // MARK: UICollectionViewDataSource
-
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 0
@@ -47,7 +54,7 @@ class BookListCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookCollectionViewCell.reuseId, for: indexPath)
     
         // Configure the cell
     
