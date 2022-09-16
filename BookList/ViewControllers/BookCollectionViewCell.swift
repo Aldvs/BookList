@@ -18,7 +18,7 @@ class BookCollectionViewCell: UICollectionViewCell {
         label.numberOfLines = 0
         return label
     }()
-
+    
     private let isbnLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)

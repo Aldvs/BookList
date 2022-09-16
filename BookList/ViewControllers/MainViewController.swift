@@ -14,6 +14,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     private var collectionView: UICollectionView?
     
+    var activityIndicator = UIActivityIndicatorView(style: .large)
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
@@ -39,7 +41,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         view.addSubview(collectionView)
         collectionView.frame = view.bounds
         collectionView.showsVerticalScrollIndicator = false
-        
+        setupIndicator()
+
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -63,9 +66,9 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         navBarAppearence.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
         
         navBarAppearence.backgroundColor = UIColor(
-            red: 21/255,
-            green: 101/255,
-            blue: 192/255,
+            red: 255/255,
+            green: 165/255,
+            blue: 0/255,
             alpha: 194/255
         )
         
@@ -93,12 +96,25 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         NetworkManager.shared.fetchDataAlamofire(from: url) { result in
             switch result {
             case .success(let listData):
-                self.data = listData
-                print(self.data)
-                self.collectionView?.reloadData()
+                DispatchQueue.main.async {
+                    self.data = listData
+                    self.activityIndicator.stopAnimating()
+                    self.collectionView?.reloadData()
+                }
             case .failure(let error):
                 print(error)
             }
         }
+    }
+    
+    func setupIndicator() {
+        collectionView?.addSubview(activityIndicator)
+        activityIndicator.color = .orange
+        activityIndicator.snp.makeConstraints { make in
+            make.centerY.equalTo(view.center.y - 127)
+            make.centerX.equalTo(view.center.x)
+        }
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
     }
 }
