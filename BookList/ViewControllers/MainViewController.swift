@@ -16,8 +16,8 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
         fetchData(from: Link.bookListApi.rawValue)
-        
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         
@@ -53,17 +53,52 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
         return cell
     }
     
+    private func setupNavigationBar() {
+        title = "Список книг"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        let navBarAppearence = UINavigationBarAppearance()
+        navBarAppearence.configureWithOpaqueBackground()
+        navBarAppearence.titleTextAttributes = [.foregroundColor: UIColor.white]
+        navBarAppearence.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+        
+        navBarAppearence.backgroundColor = UIColor(
+            red: 21/255,
+            green: 101/255,
+            blue: 192/255,
+            alpha: 194/255
+        )
+        
+        navigationController?.navigationBar.standardAppearance = navBarAppearence
+        navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearence
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "Выйти",
+            style: .plain,
+            target: self,
+            action: #selector(logOut)
+        )
+        navigationController?.navigationBar.tintColor = .white
+    }
+
+    @objc private func logOut() {
+        dismiss(animated: true)
+//        let newTaskVC = TaskViewController()
+//        newTaskVC.modalPresentationStyle = .fullScreen
+//        present(newTaskVC, animated: true)
+    }
+
     //MARK: - Network Methods
-        private func fetchData(from url: String) {
-            NetworkManager.shared.fetchDataAlamofire(from: url) { result in
-                switch result {
-                case .success(let listData):
-                    self.data = listData
-                    print(self.data)
-                    self.collectionView?.reloadData()
-                case .failure(let error):
-                    print(error)
-                }
+    private func fetchData(from url: String) {
+        NetworkManager.shared.fetchDataAlamofire(from: url) { result in
+            switch result {
+            case .success(let listData):
+                self.data = listData
+                print(self.data)
+                self.collectionView?.reloadData()
+            case .failure(let error):
+                print(error)
             }
         }
+    }
 }
