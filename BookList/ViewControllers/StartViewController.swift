@@ -100,7 +100,7 @@ class StartViewController: UIViewController, UITextFieldDelegate {
     }
     
     @objc private func logInPressed() {
-        let bookListVC = BookListCollectionViewController()
+        let bookListVC = MainViewController()
         bookListVC.modalPresentationStyle = .fullScreen
         present(bookListVC, animated: true)
     }
