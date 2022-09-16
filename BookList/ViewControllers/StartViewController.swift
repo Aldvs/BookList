@@ -140,6 +140,8 @@ class StartViewController: UIViewController, UITextFieldDelegate {
             
         if passCheck == keychain.get(inputUserText) {
             self.keychain.set(true, forKey: "isAuth")
+//            loginTextField.text = ""
+//            passwordTextField.text = ""
             let bookListVC = UINavigationController(rootViewController: MainViewController())
             bookListVC.modalPresentationStyle = .fullScreen
             present(bookListVC, animated: true)

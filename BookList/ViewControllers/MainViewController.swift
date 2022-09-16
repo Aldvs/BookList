@@ -88,7 +88,15 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     }
 
     @objc private func logOut() {
-        dismiss(animated: true)
+        if let isAuth = keychain.getBool("isAuth"), isAuth {
+            keychain.delete("isAuth")
+            keychain.set(false, forKey: "isAuth")
+            let startVC = UINavigationController(rootViewController: StartViewController())
+            startVC.modalPresentationStyle = .fullScreen
+            present(startVC, animated: true)
+        } else {
+            dismiss(animated: true)
+        }
     }
 
     //MARK: - Network Methods
