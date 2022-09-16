@@ -86,9 +86,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     @objc private func logOut() {
         dismiss(animated: true)
-//        let newTaskVC = TaskViewController()
-//        newTaskVC.modalPresentationStyle = .fullScreen
-//        present(newTaskVC, animated: true)
+        
     }
 
     //MARK: - Network Methods

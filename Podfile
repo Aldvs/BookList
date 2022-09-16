@@ -8,6 +8,6 @@ target 'BookList' do
   # Pods for BookList
   pod 'SnapKit', '~> 5.6.0'
   pod 'Alamofire'
-  
+  pod 'KeychainSwift', '~> 20.0'
 
 end
