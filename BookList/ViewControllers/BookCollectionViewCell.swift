@@ -10,8 +10,10 @@ import SnapKit
 
 class BookCollectionViewCell: UICollectionViewCell {
     
+    //MARK: - Public Properties
     static let reuseId = "BookCell"
     
+    //MARK: - Private Properties
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 20, weight: .light)
@@ -57,7 +59,8 @@ class BookCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
-//contentView.addSubview()
+
+//MARK: - Extension
 extension BookCollectionViewCell {
     func setupConstraints() {
         contentView.addSubview(titleLabel)

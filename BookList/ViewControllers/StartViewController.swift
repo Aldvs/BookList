@@ -12,15 +12,17 @@ import KeychainSwift
 
 class StartViewController: UIViewController, UITextFieldDelegate {
 
+    //MARK: - Public Properties
     let keychain = KeychainSwift(keyPrefix: "book_")
 
-    let viewContainer = UIView()
-    let loginTextField = UITextField()
-    let passwordTextField = UITextField()
-    let logInButton = UIButton(type: .custom)
-    let registerButton = UIButton(type: .custom)
+    //MARK: - Private Properties
+    private let viewContainer = UIView()
+    private let loginTextField = UITextField()
+    private let passwordTextField = UITextField()
+    private let logInButton = UIButton(type: .custom)
+    private let registerButton = UIButton(type: .custom)
     
-    
+    //MARK: - View Life Cycle Method
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -28,15 +30,60 @@ class StartViewController: UIViewController, UITextFieldDelegate {
         setupConstraints()
     }
     
+    //MARK: Private Methods
+    @objc private func logInPressed() {
+        
+        guard let inputUserText = loginTextField.text, !inputUserText.isEmpty else {
+            showAlert(title: "Пустое поля логина", message: "Пожалуйста, введите свой логина")
+            return
+        }
+        guard let inputPassText = passwordTextField.text, !inputPassText.isEmpty else {
+            showAlert(title: "Пустое поле пароля", message: "Пожалуйста, введите пароль")
+            return
+        }
+
+        let passCheck = SHAManager.shared.getHash(from: inputPassText)
+        if passCheck == keychain.get(inputUserText) {
+            self.keychain.set(true, forKey: "isAuth")
+            let bookListVC = UINavigationController(rootViewController: MainViewController())
+            bookListVC.modalPresentationStyle = .fullScreen
+            present(bookListVC, animated: true)
+        } else {
+            showAlert(title: "Неверный логин или пароль", message: "Пожалуйста проверьте данные")
+            passwordTextField.text = ""
+        }
+    }
+    
+    @objc private func registerPressed() {
+        let registerVC = UINavigationController(rootViewController: RegisterViewController())
+        registerVC.modalPresentationStyle = .fullScreen
+        present(registerVC, animated: true)
+    }
+}
+
+//MARK: - Extensions
+extension StartViewController {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super .touchesBegan(touches, with: event)
+        view.endEditing(true)
+    }
+
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okAction)
+        present(alert, animated: true)
+    }
+    
     private func setupElements() {
+
         viewContainer.backgroundColor = .lightGray
         viewContainer.layer.cornerRadius = 9
         viewContainer.layer.shadowRadius = 9
         viewContainer.layer.shadowOpacity = 0.3
         viewContainer.layer.shadowOffset = CGSize(width: 5, height: 8)
-        
-        
-        // Set self as the delegate of the textfield so we can handle the Return button.
+    
         loginTextField.delegate = self
         loginTextField.placeholder = "Логин"
         loginTextField.borderStyle = .roundedRect
@@ -45,7 +92,6 @@ class StartViewController: UIViewController, UITextFieldDelegate {
         loginTextField.returnKeyType = .next
         loginTextField.autocapitalizationType = .none
         
-        // Set self as the delegate of the textfield so we can handle the Return button.
         passwordTextField.delegate = self
         passwordTextField.placeholder = "Пароль"
         passwordTextField.borderStyle = .roundedRect
@@ -73,8 +119,6 @@ class StartViewController: UIViewController, UITextFieldDelegate {
         registerButton.titleLabel?.font = UIFont(name: "Futura", size: 20.0)
         
         registerButton.addTarget(self, action: #selector(registerPressed), for: .touchUpInside)
-        
-        
     }
 
     private func setupConstraints() {
@@ -119,68 +163,16 @@ class StartViewController: UIViewController, UITextFieldDelegate {
             make.right.equalTo(viewContainer).offset(-30)
             make.height.equalTo(50)
         }
-
-    
     }
-    
-    @objc private func logInPressed() {
-        
-        guard let inputUserText = loginTextField.text, !inputUserText.isEmpty else {
-            showAlert(title: "Пустое поля логина", message: "Пожалуйста, введите свой логина")
-            return
-        }
 
-        guard let inputPassText = passwordTextField.text, !inputPassText.isEmpty else {
-            showAlert(title: "Пустое поле пароля", message: "Пожалуйста, введите пароль")
-            return
-        }
-
-        
-        let passCheck = SHAManager.shared.getHash(from: inputPassText)
-            
-        if passCheck == keychain.get(inputUserText) {
-            self.keychain.set(true, forKey: "isAuth")
-//            loginTextField.text = ""
-//            passwordTextField.text = ""
-            let bookListVC = UINavigationController(rootViewController: MainViewController())
-            bookListVC.modalPresentationStyle = .fullScreen
-            present(bookListVC, animated: true)
+    internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == loginTextField {
+            passwordTextField.becomeFirstResponder()
         } else {
-            showAlert(title: "Неверный логин или пароль", message: "Пожалуйста проверьте данные")
-            passwordTextField.text = ""
+            logInPressed()
         }
-
+        return true
     }
-    
-    @objc private func registerPressed() {
-        let registerVC = UINavigationController(rootViewController: RegisterViewController())
-        registerVC.modalPresentationStyle = .fullScreen
-        present(registerVC, animated: true)
-    }
-}
-
-extension StartViewController {
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super .touchesBegan(touches, with: event)
-        view.endEditing(true)
-    }
-
-    private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default)
-        alert.addAction(okAction)
-        present(alert, animated: true)
-    }
-    
-//    private func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//        if textField == loginTextField {
-//            passwordTextField.becomeFirstResponder()
-//        } else {
-//            logInPressed()
-//        }
-//        return true
-//    }
 }
 
 

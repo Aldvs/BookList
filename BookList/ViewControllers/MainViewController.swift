@@ -11,43 +11,24 @@ import KeychainSwift
 
 class MainViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    var data: [ModelBook] = []
-    
+    //MARK: - Public Properties
     let keychain = KeychainSwift(keyPrefix: "book_")
     
+    //MARK: - Private Properties
+    private var data: [ModelBook] = []
     private var collectionView: UICollectionView?
-    
-    var activityIndicator = UIActivityIndicatorView(style: .large)
+    private var activityIndicator = UIActivityIndicatorView(style: .large)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
         fetchData(from: Link.bookListApi.rawValue)
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        
-        layout.sectionInset = Constants.sectionInsets
-        layout.minimumLineSpacing = Constants.bookMinimumLineSpacing
-        layout.itemSize = CGSize(width: Constants.itemWidth,
-                                 height: Constants.itemHeight)
-
-        collectionView = UICollectionView(frame: .zero,
-                                          collectionViewLayout: layout)
-
-        guard let collectionView = collectionView else {
-            return
-        }
-        collectionView.register(BookCollectionViewCell.self, forCellWithReuseIdentifier: BookCollectionViewCell.reuseId)
-
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        view.addSubview(collectionView)
-        collectionView.frame = view.bounds
-        collectionView.showsVerticalScrollIndicator = false
+        setupCollectionView()
         setupIndicator()
 
     }
     
+    //MARK: - Public Methods
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return data.count
     }
@@ -57,6 +38,33 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                                                       for: indexPath) as! BookCollectionViewCell
         cell.configure(with: data[indexPath.row])
         return cell
+    }
+    
+    //MARK: - Private Methods
+    private func setupCollectionView() {
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        
+        layout.sectionInset = Constants.sectionInsets
+        layout.minimumLineSpacing = Constants.bookMinimumLineSpacing
+        layout.itemSize = CGSize(width: Constants.itemWidth,
+                                 height: Constants.itemHeight)
+        
+        collectionView = UICollectionView(frame: .zero,
+                                          collectionViewLayout: layout)
+        
+        guard let collectionView = collectionView else {
+            return
+        }
+        collectionView.register(BookCollectionViewCell.self, forCellWithReuseIdentifier: BookCollectionViewCell.reuseId)
+        
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        view.addSubview(collectionView)
+        collectionView.frame = view.bounds
+        collectionView.showsVerticalScrollIndicator = false
+        
     }
     
     private func setupNavigationBar() {
@@ -98,8 +106,19 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
             dismiss(animated: true)
         }
     }
+    
+    private func setupIndicator() {
+        collectionView?.addSubview(activityIndicator)
+        activityIndicator.color = .orange
+        activityIndicator.snp.makeConstraints { make in
+            make.centerY.equalTo(view.center.y - 127)
+            make.centerX.equalTo(view.center.x)
+        }
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
+    }
 
-    //MARK: - Network Methods
+    //MARK: - Network Method
     private func fetchData(from url: String) {
         NetworkManager.shared.fetchDataAlamofire(from: url) { result in
             switch result {
@@ -113,16 +132,5 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
                 print(error)
             }
         }
-    }
-    
-    func setupIndicator() {
-        collectionView?.addSubview(activityIndicator)
-        activityIndicator.color = .orange
-        activityIndicator.snp.makeConstraints { make in
-            make.centerY.equalTo(view.center.y - 127)
-            make.centerX.equalTo(view.center.x)
-        }
-        activityIndicator.startAnimating()
-        activityIndicator.hidesWhenStopped = true
     }
 }

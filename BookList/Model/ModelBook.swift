@@ -17,7 +17,7 @@ enum Link: String {
     case bookListApi = "https://demo.api-platform.com/books?page=1&itemsPerPage=30"
 }
 
-
+//constants for collectionview setup
 struct Constants {
     static let itemsPerRow: CGFloat = 1
     static let sectionInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
