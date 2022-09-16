@@ -13,6 +13,8 @@
 		845D327D28D0E11E00D5AF1A /* BookCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845D327C28D0E11E00D5AF1A /* BookCollectionViewCell.swift */; };
 		845D327F28D0E13900D5AF1A /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845D327E28D0E13900D5AF1A /* NetworkingManager.swift */; };
 		845D328228D0E15800D5AF1A /* ModelBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845D328128D0E15800D5AF1A /* ModelBook.swift */; };
+		84E21BE828D4BCA300D2C0C5 /* SHA256Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E21BE728D4BCA300D2C0C5 /* SHA256Manager.swift */; };
+		84E21BEA28D4C27D00D2C0C5 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E21BE928D4C27D00D2C0C5 /* RegisterViewController.swift */; };
 		84E8463028D28BEC00788DF0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84E8462F28D28BEC00788DF0 /* LaunchScreen.storyboard */; };
 		84E8463228D377FA00788DF0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84E8463128D377FA00788DF0 /* MainViewController.swift */; };
 		BB1DE8E4B9FA7628BFD950DB /* Pods_BookList.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF458A111DDCBC01F9FF873D /* Pods_BookList.framework */; };
@@ -28,6 +30,8 @@
 		845D327C28D0E11E00D5AF1A /* BookCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookCollectionViewCell.swift; sourceTree = "<group>"; };
 		845D327E28D0E13900D5AF1A /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
 		845D328128D0E15800D5AF1A /* ModelBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelBook.swift; sourceTree = "<group>"; };
+		84E21BE728D4BCA300D2C0C5 /* SHA256Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SHA256Manager.swift; sourceTree = "<group>"; };
+		84E21BE928D4C27D00D2C0C5 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		84E8462F28D28BEC00788DF0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84E8463128D377FA00788DF0 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		C4181C8EB8A27B7CDAD79743 /* Pods-BookList.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BookList.release.xcconfig"; path = "Target Support Files/Pods-BookList/Pods-BookList.release.xcconfig"; sourceTree = "<group>"; };
@@ -97,6 +101,7 @@
 		845D327828D0DFDC00D5AF1A /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				84E21BE928D4C27D00D2C0C5 /* RegisterViewController.swift */,
 				845D326328D0921E00D5AF1A /* StartViewController.swift */,
 				84E8463128D377FA00788DF0 /* MainViewController.swift */,
 				845D327C28D0E11E00D5AF1A /* BookCollectionViewCell.swift */,
@@ -116,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				845D327E28D0E13900D5AF1A /* NetworkingManager.swift */,
+				84E21BE728D4BCA300D2C0C5 /* SHA256Manager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -259,8 +265,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84E21BE828D4BCA300D2C0C5 /* SHA256Manager.swift in Sources */,
 				845D328228D0E15800D5AF1A /* ModelBook.swift in Sources */,
 				845D326428D0921E00D5AF1A /* StartViewController.swift in Sources */,
+				84E21BEA28D4C27D00D2C0C5 /* RegisterViewController.swift in Sources */,
 				845D327D28D0E11E00D5AF1A /* BookCollectionViewCell.swift in Sources */,
 				84E8463228D377FA00788DF0 /* MainViewController.swift in Sources */,
 				845D327F28D0E13900D5AF1A /* NetworkingManager.swift in Sources */,

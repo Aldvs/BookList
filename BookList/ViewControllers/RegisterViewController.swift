@@ -1,26 +1,20 @@
 //
-//  ViewController.swift
+//  RegisterViewController.swift
 //  BookList
 //
-//  Created by admin on 13.09.2022.
+//  Created by admin on 16.09.2022.
 //
 
 import UIKit
 import SnapKit
 import KeychainSwift
 
-enum textFieldError: Error {
-    case emptyLogInTextField
-    case emptyPasswordTextField
-}
-
-class StartViewController: UIViewController, UITextFieldDelegate {
-
+class RegisterViewController: UIViewController, UITextFieldDelegate {
+    
     let viewContainer = UIView()
     let loginTextField = UITextField()
     let passwordTextField = UITextField()
-    let logInButton = UIButton(type: .custom)
-    let registerButton = UIButton(type: .custom)
+    let regNewPersonButton = UIButton(type: .custom)
     
     let keychain = KeychainSwift(keyPrefix: "book_")
     
@@ -32,7 +26,7 @@ class StartViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func setupElements() {
-        viewContainer.backgroundColor = .lightGray
+        viewContainer.backgroundColor = .yellow
         viewContainer.layer.cornerRadius = 9
         viewContainer.layer.shadowRadius = 9
         viewContainer.layer.shadowOpacity = 0.3
@@ -41,7 +35,7 @@ class StartViewController: UIViewController, UITextFieldDelegate {
         
         // Set self as the delegate of the textfield so we can handle the Return button.
         loginTextField.delegate = self
-        loginTextField.placeholder = "Логин"
+        loginTextField.placeholder = "Новый логин"
         loginTextField.borderStyle = .roundedRect
         loginTextField.backgroundColor = UIColor.white
         loginTextField.keyboardType = .emailAddress
@@ -50,7 +44,7 @@ class StartViewController: UIViewController, UITextFieldDelegate {
         
         // Set self as the delegate of the textfield so we can handle the Return button.
         passwordTextField.delegate = self
-        passwordTextField.placeholder = "Пароль"
+        passwordTextField.placeholder = "Новый пароль"
         passwordTextField.borderStyle = .roundedRect
         passwordTextField.backgroundColor = UIColor.white
         passwordTextField.keyboardType = .emailAddress
@@ -59,23 +53,14 @@ class StartViewController: UIViewController, UITextFieldDelegate {
         passwordTextField.returnKeyType = .done
         passwordTextField.isSecureTextEntry = true
         
-        logInButton.setTitle("Войти", for: .normal)
-        logInButton.layer.cornerRadius = 10
-        logInButton.setTitleColor(UIColor.white, for: .normal)
-        logInButton.setTitleColor(UIColor.lightGray, for: .highlighted)
-        logInButton.backgroundColor = UIColor.orange
-        logInButton.titleLabel?.font = UIFont(name: "Futura", size: 20.0)
+        regNewPersonButton.setTitle("Занести", for: .normal)
+        regNewPersonButton.layer.cornerRadius = 10
+        regNewPersonButton.setTitleColor(UIColor.white, for: .normal)
+        regNewPersonButton.setTitleColor(UIColor.lightGray, for: .highlighted)
+        regNewPersonButton.backgroundColor = UIColor.orange
+        regNewPersonButton.titleLabel?.font = UIFont(name: "Futura", size: 20.0)
         
-        logInButton.addTarget(self, action: #selector(logInPressed), for: .touchUpInside)
-        
-        registerButton.setTitle("Занести пользователя", for: .normal)
-        registerButton.layer.cornerRadius = 10
-        registerButton.setTitleColor(UIColor.white, for: .normal)
-        registerButton.setTitleColor(UIColor.lightGray, for: .highlighted)
-        registerButton.backgroundColor = UIColor.orange
-        registerButton.titleLabel?.font = UIFont(name: "Futura", size: 20.0)
-        
-        registerButton.addTarget(self, action: #selector(registerPressed), for: .touchUpInside)
+        regNewPersonButton.addTarget(self, action: #selector(regNewPersonButtonPressed), for: .touchUpInside)
         
         
     }
@@ -84,15 +69,14 @@ class StartViewController: UIViewController, UITextFieldDelegate {
         self.view.addSubview(viewContainer)
         viewContainer.addSubview(loginTextField)
         viewContainer.addSubview(passwordTextField)
-        viewContainer.addSubview(logInButton)
-        viewContainer.addSubview(registerButton)
+        viewContainer.addSubview(regNewPersonButton)
         
         viewContainer.snp.makeConstraints { (make) in
             make.left.equalTo(self.view).offset(40)
             make.right.equalTo(self.view).offset(-40)
             make.width.lessThanOrEqualTo(500)
             make.center.equalTo(self.view)
-            make.height.equalTo(250)
+            make.height.equalTo(192)
         }
         
         loginTextField.snp.makeConstraints { (make) in
@@ -109,35 +93,17 @@ class StartViewController: UIViewController, UITextFieldDelegate {
             make.height.equalTo(30)
         }
 
-        logInButton.snp.makeConstraints { (make) in
+        regNewPersonButton.snp.makeConstraints { (make) in
             make.top.equalTo(passwordTextField.snp.bottom).offset(16)
             make.left.equalTo(viewContainer).offset(30)
             make.right.equalTo(viewContainer).offset(-30)
             make.height.equalTo(50)
         }
-        
-        registerButton.snp.makeConstraints { (make) in
-            make.top.equalTo(logInButton.snp.bottom).offset(16)
-            make.left.equalTo(viewContainer).offset(30)
-            make.right.equalTo(viewContainer).offset(-30)
-            make.height.equalTo(50)
-        }
-
     
     }
     
-    @objc private func logInPressed() throws {
+    @objc private func regNewPersonButtonPressed() throws {
         
-        let bookListVC = UINavigationController(rootViewController: MainViewController())
-        bookListVC.modalPresentationStyle = .fullScreen
-        present(bookListVC, animated: true)
-    }
-    
-    @objc private func registerPressed() throws {
-        
-        let registerVC = UINavigationController(rootViewController: RegisterViewController())
-        registerVC.modalPresentationStyle = .fullScreen
-        present(registerVC, animated: true)
+        dismiss(animated: true)
     }
 }
-
