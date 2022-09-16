@@ -7,10 +7,13 @@
 
 import UIKit
 import SnapKit
+import KeychainSwift
 
 class MainViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var data: [ModelBook] = []
+    
+    let keychain = KeychainSwift(keyPrefix: "book_")
     
     private var collectionView: UICollectionView?
     
@@ -86,7 +89,6 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
 
     @objc private func logOut() {
         dismiss(animated: true)
-        
     }
 
     //MARK: - Network Methods

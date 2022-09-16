@@ -11,12 +11,13 @@ import KeychainSwift
 
 class RegisterViewController: UIViewController, UITextFieldDelegate {
     
+    let keychain = KeychainSwift(keyPrefix: "book_")
+    
     let viewContainer = UIView()
     let loginTextField = UITextField()
     let passwordTextField = UITextField()
     let regNewPersonButton = UIButton(type: .custom)
-    
-    let keychain = KeychainSwift(keyPrefix: "book_")
+    let backButton = UIButton(type: .custom)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +63,15 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         
         regNewPersonButton.addTarget(self, action: #selector(regNewPersonButtonPressed), for: .touchUpInside)
         
+        backButton.setTitle("Вернуться", for: .normal)
+        backButton.layer.cornerRadius = 10
+        backButton.setTitleColor(UIColor.white, for: .normal)
+        backButton.setTitleColor(UIColor.lightGray, for: .highlighted)
+        backButton.backgroundColor = UIColor.orange
+        backButton.titleLabel?.font = UIFont(name: "Futura", size: 20.0)
         
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+
     }
 
     private func setupConstraints() {
@@ -70,13 +79,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         viewContainer.addSubview(loginTextField)
         viewContainer.addSubview(passwordTextField)
         viewContainer.addSubview(regNewPersonButton)
+        viewContainer.addSubview(backButton)
         
         viewContainer.snp.makeConstraints { (make) in
             make.left.equalTo(self.view).offset(40)
             make.right.equalTo(self.view).offset(-40)
             make.width.lessThanOrEqualTo(500)
             make.center.equalTo(self.view)
-            make.height.equalTo(192)
+            make.height.equalTo(250)
         }
         
         loginTextField.snp.makeConstraints { (make) in
@@ -99,11 +109,59 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
             make.right.equalTo(viewContainer).offset(-30)
             make.height.equalTo(50)
         }
-    
+        
+        backButton.snp.makeConstraints { (make) in
+            make.top.equalTo(regNewPersonButton.snp.bottom).offset(16)
+            make.left.equalTo(viewContainer).offset(30)
+            make.right.equalTo(viewContainer).offset(-30)
+            make.height.equalTo(50)
+        }
+        
     }
     
-    @objc private func regNewPersonButtonPressed() throws {
+    @objc private func regNewPersonButtonPressed() {
         
+        guard let inputUserText = loginTextField.text, !inputUserText.isEmpty else {
+            showAlert(title: "Пустое поля логина", message: "Пожалуйста, введите свой логина")
+            return
+        }
+        guard let inputPassText = passwordTextField.text, !inputPassText.isEmpty else {
+            showAlert(title: "Пустое поле пароля", message: "Пожалуйста, введите пароль")
+            return
+        }
+        
+        if keychain.set(SHAManager.shared.getHash(from: inputPassText), forKey: inputUserText) {
+            showAlert(title: "Успешно!", message: "Пользователь зарегистрирован")
+        } else {
+            showAlert(title: "Ошибка!", message: "Что-то пошло не так")
+        }
+    }
+    
+    @objc private func backButtonPressed() {
         dismiss(animated: true)
     }
+}
+
+extension RegisterViewController {
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super .touchesBegan(touches, with: event)
+        view.endEditing(true)
+    }
+
+    private func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okAction)
+        present(alert, animated: true)
+    }
+    
+//    internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+//        if textField == loginTextField {
+//            passwordTextField.becomeFirstResponder()
+//        } else {
+//            regNewPersonButtonPressed()
+//        }
+//        return true
+//    }
 }
