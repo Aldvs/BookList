@@ -21,6 +21,7 @@ class StartViewController: UIViewController, UITextFieldDelegate {
     private let passwordTextField = UITextField()
     private let logInButton = UIButton(type: .custom)
     private let registerButton = UIButton(type: .custom)
+    private let eyeButton = UIButton(type: .custom)
     
     //MARK: - View Life Cycle Method
     override func viewDidLoad() {
@@ -28,6 +29,7 @@ class StartViewController: UIViewController, UITextFieldDelegate {
         view.backgroundColor = .white
         setupElements()
         setupConstraints()
+        setupEyeButton()
     }
     
     //MARK: Private Methods
@@ -58,6 +60,44 @@ class StartViewController: UIViewController, UITextFieldDelegate {
         let registerVC = UINavigationController(rootViewController: RegisterViewController())
         registerVC.modalPresentationStyle = .fullScreen
         present(registerVC, animated: true)
+    }
+    
+    
+    @objc private func btnPasswordVisibilityClicked(_ sender: Any) {
+        (sender as! UIButton).isSelected = !(sender as! UIButton).isSelected
+        let senderValue = (sender as! UIButton).isSelected
+        toggleEyeButton(senderValue)
+    }
+    
+    private func setupEyeButton() {
+        
+        passwordTextField.rightViewMode = .unlessEditing
+        
+        let boldConfig = UIImage.SymbolConfiguration(weight: .light)
+        let boldSearch = UIImage(systemName: "eye.slash", withConfiguration: boldConfig)
+        
+        eyeButton.setImage(boldSearch, for: .normal)
+        eyeButton.tintColor = .black
+        eyeButton.addTarget(self, action: #selector(self.btnPasswordVisibilityClicked(_:)), for: .touchUpInside)
+        
+        passwordTextField.rightView = eyeButton
+        passwordTextField.rightViewMode = .always
+        passwordTextField.isSecureTextEntry = true
+        
+    }
+    
+    private func toggleEyeButton(_ senderValue: Bool) {
+        if senderValue {
+            self.passwordTextField.isSecureTextEntry = false
+            let boldConfig = UIImage.SymbolConfiguration(weight: .light)
+            let boldSearch = UIImage(systemName: "eye", withConfiguration: boldConfig)
+            eyeButton.setImage(boldSearch, for: .normal)
+        } else {
+            self.passwordTextField.isSecureTextEntry = true
+            let boldConfig = UIImage.SymbolConfiguration(weight: .light)
+            let boldSearch = UIImage(systemName: "eye.slash", withConfiguration: boldConfig)
+            eyeButton.setImage(boldSearch, for: .normal)
+        }
     }
 }
 
