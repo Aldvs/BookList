@@ -23,9 +23,9 @@ class StartViewController: UIViewController, UITextFieldDelegate {
     private let registerButton = UIButton(type: .custom)
     private let eyeButton = UIButton(type: .custom)
     
-    //MARK: - View Life Cycle Method
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    //MARK: - View Life Cycle Methods
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         view.backgroundColor = .white
         setupElements()
         setupConstraints()
@@ -62,30 +62,30 @@ class StartViewController: UIViewController, UITextFieldDelegate {
         present(registerVC, animated: true)
     }
     
-    
+    //MARK: - Setup EyeButton
     @objc private func btnPasswordVisibilityClicked(_ sender: Any) {
         (sender as! UIButton).isSelected = !(sender as! UIButton).isSelected
         let senderValue = (sender as! UIButton).isSelected
         toggleEyeButton(senderValue)
     }
-    
+
     private func setupEyeButton() {
-        
+
         passwordTextField.rightViewMode = .unlessEditing
-        
+
         let boldConfig = UIImage.SymbolConfiguration(weight: .light)
         let boldSearch = UIImage(systemName: "eye.slash", withConfiguration: boldConfig)
-        
+
         eyeButton.setImage(boldSearch, for: .normal)
         eyeButton.tintColor = .black
         eyeButton.addTarget(self, action: #selector(self.btnPasswordVisibilityClicked(_:)), for: .touchUpInside)
-        
+
         passwordTextField.rightView = eyeButton
         passwordTextField.rightViewMode = .always
         passwordTextField.isSecureTextEntry = true
-        
+
     }
-    
+
     private func toggleEyeButton(_ senderValue: Bool) {
         if senderValue {
             self.passwordTextField.isSecureTextEntry = false
@@ -104,18 +104,15 @@ class StartViewController: UIViewController, UITextFieldDelegate {
 //MARK: - Extensions
 extension StartViewController {
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super .touchesBegan(touches, with: event)
-        view.endEditing(true)
+    internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == loginTextField {
+            passwordTextField.becomeFirstResponder()
+        } else {
+            logInPressed()
+        }
+        return true
     }
 
-    private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default)
-        alert.addAction(okAction)
-        present(alert, animated: true)
-    }
-    
     private func setupElements() {
 
         viewContainer.backgroundColor = .lightGray
@@ -205,14 +202,6 @@ extension StartViewController {
         }
     }
 
-    internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == loginTextField {
-            passwordTextField.becomeFirstResponder()
-        } else {
-            logInPressed()
-        }
-        return true
-    }
 }
 
 

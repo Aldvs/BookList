@@ -19,13 +19,17 @@ class MainViewController: UIViewController, UICollectionViewDelegate, UICollecti
     private var collectionView: UICollectionView?
     private var activityIndicator = UIActivityIndicatorView(style: .large)
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    //MARK: - Life Cycle Methods
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         setupNavigationBar()
-        fetchData(from: Link.bookListApi.rawValue)
         setupCollectionView()
         setupIndicator()
-
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchData(from: Link.bookListApi.rawValue)
     }
     
     //MARK: - Public Methods

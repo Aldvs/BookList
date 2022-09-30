@@ -23,13 +23,14 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     private let eyeButton = UIButton(type: .custom)
     
     //MARK: - View LifeCycle Method
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         view.backgroundColor = .white
         setupElements()
         setupConstraints()
         setupEyeButton()
     }
+
     
     //MARK: - Private Methods
     @objc private func regNewPersonButtonPressed() {
@@ -54,6 +55,7 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         dismiss(animated: true)
     }
     
+    //MARK: - Setup EyeButton
     @objc private func btnPasswordVisibilityClicked(_ sender: Any) {
         (sender as! UIButton).isSelected = !(sender as! UIButton).isSelected
         let senderValue = (sender as! UIButton).isSelected
@@ -94,18 +96,6 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
 
 //MARK: - Extensions
 extension RegisterViewController {
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super .touchesBegan(touches, with: event)
-        view.endEditing(true)
-    }
-
-    private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default)
-        alert.addAction(okAction)
-        present(alert, animated: true)
-    }
     
     internal func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == loginTextField {
