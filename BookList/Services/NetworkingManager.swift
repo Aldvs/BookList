@@ -5,14 +5,7 @@
 //  Created by admin on 13.09.2022.
 //
 
-import Foundation
 import Alamofire
-
-enum NetworkError: Error {
-    case invalidUrl
-    case noData
-    case decodingError
-}
 
 class NetworkManager {
     static let shared = NetworkManager()
@@ -21,15 +14,15 @@ class NetworkManager {
     
     private init() {}
 
-    func fetchDataAlamofire(from url: String, with completion: @escaping(Result<[ModelBook],NetworkError>) -> Void) {
+    func fetchDataAlamofire(from url: String, with completion: @escaping(Result<[ModelBook],AFError>) -> Void) {
         AF.request(Link.bookListApi.rawValue, method: .get, headers: .init(headers))
             .validate()
             .responseDecodable(of: [ModelBook].self) { dataResponse in
                 switch dataResponse.result {
                 case .success(let bookData):
                     completion(.success(bookData))
-                case .failure:
-                    completion(.failure(.decodingError))
+                case .failure(let error):
+                    completion(.failure(error))
                 }
             }
     }
