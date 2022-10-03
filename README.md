@@ -1,6 +1,6 @@
 # 📚 BookList 📚
 ## Simple pet-project "BookList"
-### Initially this was my test task and did not carry any purpose. Now this is a pet project on which I am developing in ios development.
+### Initially this was my test task and did not carry any purpose. Now this is a pet project on which I am evolving in ios development.
 ### There are three views in the application. The registration, authorization screen and a table view with a list of books. The application also remembers whether the user was logged in earlier.
 ### Stack:
 1. Layout by code (SnapKit)
